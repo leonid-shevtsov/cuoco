@@ -101,7 +101,17 @@ The chef roles directory *must* contain a role file for every Capistrano role yo
 
 ### Variables
 
-TODO
+You can pass data into chef by declaring a `:chef_data` variable
+
+    set :chef_data, {
+      :myapp => {
+        :path => deploy_to
+      }
+    }
+
+The hash gets passed to Chef as if it was specified on the command line with `chef-solo -j chef_data.json`.
+
+This approach is very simplistic and not very DRY, so I'm planning to expand on variables in further releases.
 
 ### Environments
 

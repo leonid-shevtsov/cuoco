@@ -16,6 +16,7 @@ Gem::Specification.new do |gem|
   gem.version       = Cuoco::VERSION
 
   gem.add_runtime_dependency 'capistrano', '>= 2'
-  
+  gem.add_runtime_dependency 'json'
+
   gem.add_development_dependency 'rake'
 end

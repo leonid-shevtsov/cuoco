@@ -1,3 +1,4 @@
+require 'json'
 require 'cuoco/config_generator'
 
 module Cuoco
@@ -7,6 +8,7 @@ module Cuoco
       @cap = capistrano
 
       @chef_path = File.expand_path(@cap.fetch(:chef_path, 'config/chef'))
+      @node_data = @cap.fetch(:chef_data, {})
 
       @cuoco_remote_path = '/tmp/cuoco'
     end
@@ -36,7 +38,7 @@ module Cuoco
     end
 
     def upload_node_json
-      @cap.put('{}', @cuoco_remote_path+'/node.json')
+      @cap.put(@node_data.to_json, @cuoco_remote_path+'/node.json')
     end
   end
 end
