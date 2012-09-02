@@ -14,7 +14,7 @@
 
 Another common task you have to do on the remote machines is server provisioning/management, and Capistrano has no facilities for that. It's definitely possible to manage machines using Capistrano, but you have to bring your own scripts.
 
-[Chef Solo](http://wiki.opscode.com/display/chef/Chef+Solo) is a tool that uses well-structured, data-driven Ruby scripts to describe and run configuration management routines. It runs locally and manages the machine it's running from. So before running Chef Solo, you have to install it and upload your scripts to that machine. You can do that by hand, you can use one of the many Chef Solo bootstrap scripts, or you can use some tool like littlechef, which needs to be configured to know about your servers.
+[Chef Solo](http://wiki.opscode.com/display/chef/Chef+Solo) is a tool that uses well-structured, data-driven Ruby scripts to describe and run configuration management routines. It manages the machine it's running from. So before running Chef Solo on a remote machine, you have to install it there and upload your scripts to that machine. You can do that by hand, you can use one of the many Chef Solo bootstrap scripts, or you can use some tool like littlechef, which needs to be configured to know about your servers.
 
 But wait - not only Capistrano knows where your servers are, it can already run commands on them, and in parallel. It's exactly what Chef Solo is lacking.
 
