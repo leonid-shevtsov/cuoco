@@ -6,6 +6,7 @@ require 'cuoco'
     task :update_configuration do
       bootstrap
       run_roles
+      restart_sessions
     end
 
     desc "Sets up Chef on remote server"
@@ -39,6 +40,15 @@ require 'cuoco'
 
       runner = Cuoco::Runner.new(self)
       runner.run_list( list )
+    end
+
+    task :restart_sessions do
+      logger.info "Cuoco: restarting sessions"
+      sessions.each do |key, session|
+        logger.info "Closing: #{key}"
+        session.close
+      end    
+      sessions.clear  
     end
   end
 end
