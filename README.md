@@ -102,6 +102,10 @@ TODO Environments are not supported by Chef Solo. It would be nice to provide th
 
 "Cuoco" means "cook" in Italian. The original [Capistrano is a city in Italy](https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=Capistrano,+Vibo+Valentia,+Italy&aq=0&oq=capistrano,+italy&sll=37.0625,-95.677068&sspn=60.376022,135.263672&vpsrc=0&t=h&ie=UTF8&hq=&hnear=Capistrano,+Province+of+Vibo+Valentia,+Calabria,+Italy&z=16). So a chef working solo in Capistrano would be called *un cuoco*... get it now?
 
+(If you've been expecting to see Kaley Cuoco here, I'll save you a trip to Reddit:)
+
+![Another Cuoco](http://i.imgur.com/u5OIil.jpg)
+
 * * * 
 
 2012 [Leonid Shevtsov](http://leonid.shevtsov.me)
