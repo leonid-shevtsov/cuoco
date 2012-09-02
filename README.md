@@ -69,7 +69,7 @@ directly.
 
 **As of September 2, 2012 the [pg gem fails to compile on Chef installed with the default bootstrap script](http://tickets.opscode.com/browse/COOK-1406).**
 
-You can replace the Omnibus installation script with any other, like this one I wrote for Ubuntu 12.04:
+You can replace the Omnibus installation script with any other, like [this one](https://gist.github.com/3601146) I wrote for Ubuntu 12.04, by setting the `:chef_install_command` variable:
 
     set :chef_install_command, 'wget -q -O - https://raw.github.com/gist/3601146/install_chef_ubuntu_precise.sh | sudo bash'
 
