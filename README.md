@@ -65,6 +65,14 @@ If application deployment doesn't apply in your scenario, you can just run
 
 directly.
 
+### Custom bootstrap scripts
+
+**As of September 2, 2012 the [pg gem fails to compile on Chef installed with the default bootstrap script](http://tickets.opscode.com/browse/COOK-1406).**
+
+You can replace the Omnibus installation script with any other, like this one I wrote for Ubuntu 12.04:
+
+    set :chef_install_command, 'wget -q -O - https://raw.github.com/gist/3601146/install_chef_ubuntu_precise.sh | sudo bash'
+
 ## Minimal requirements for remote machines
 
 Here are the minimal requirements for running Cuoco:

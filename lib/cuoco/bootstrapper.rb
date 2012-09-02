@@ -3,12 +3,7 @@ module Cuoco
     BOOTSTRAP_COMMAND = "\
       if ! command -v chef-solo &>/dev/null;\
       then\
-        if command -v curl &>/dev/null;
-        then
-          curl -L http://opscode.com/chef/install.sh | sudo -p \"sudo password: \" bash;\
-        else
-          wget -q -O - http://opscode.com/chef/install.sh | sudo -p \"sudo password: \" bash;\
-        fi;
+        INSTALL_COMMAND;
         if ! command -v chef-solo &>/dev/null;\
         then\
           false;\
@@ -20,12 +15,23 @@ module Cuoco
       fi\
     ".gsub(/ +/,' ')
 
+    DEFAULT_INSTALL_COMMAND = "
+      if command -v curl &>/dev/null;
+      then
+        curl -L http://opscode.com/chef/install.sh | sudo -p \"sudo password: \" bash;\
+      else
+        wget -q -O - http://opscode.com/chef/install.sh | sudo -p \"sudo password: \" bash;\
+      fi\
+    "
+
     def initialize(capistrano)
       @cap = capistrano
+
+      @install_command = @cap.fetch(:chef_install_command, DEFAULT_INSTALL_COMMAND)
     end
 
     def bootstrap
-      @cap.run(BOOTSTRAP_COMMAND, :shell => '/bin/bash')
+      @cap.run(BOOTSTRAP_COMMAND.gsub('INSTALL_COMMAND', @install_command), :shell => '/bin/bash')
     end
   end
 end
