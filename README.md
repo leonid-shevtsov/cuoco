@@ -77,29 +77,26 @@ Here are the minimal requirements for running Cuoco:
 * Capistrano can connect to the server;
 * the Capistrano user has sudo rights on the server. See [my article on setting up user accounts](http://leonid.shevtsov.me/en/how-to-set-up-user-accounts-on-your-web-server) for the suggested approach.
 
-## Passing configuration
+## Configuration
 
-You have two ways of hooking up Chef:
+Cuoco works with a traditional Chef directory structure. By default it looks for it in `config/chef`.
+You can change that:
 
     # set the root Chef directory 
-    # (this is the default setting)
-    set :chef_path, 'config/chef'
+    set :chef_path, 'chef'
 
-    # or specify chef paths one by one
-    set :chef_cookbooks_path, ['config/cookbooks', 'config/site-cookbooks']
-    set :chef_roles_path, 'config/roles'
-    set :chef_data_bags_path, 'config/data_bags'
+### Roles
+
+**Cuoco assigns Chef roles from Capistrano roles.**
+
+This means that every server that you will run `cuoco:update_configuration` on will
+get its own run list based on the roles it has: if it has `:app` and `:db` roles, Chef's run list for that server will be `role[app], role[db]`.
+
+The chef roles directory *must* contain a role file for every Capistrano role you are using.
 
 ### Variables
 
 TODO
-
-### Roles
-
-Cuoco assigns Chef roles from Capistrano roles. Thus, the chef roles directory
-must contain a role file for every Capistrano role you are using.
-
-Roles are handled by Chef, so if your server if both `:app` and `:db`, Chef's run list for that server will be `role[app], role[db]`.
 
 ### Environments
 
