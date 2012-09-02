@@ -1,0 +1,102 @@
+# Cuoco
+
+*Use Capistrano for server provisioning and configuration management, not only application deployment.*
+
+[Capistrano](#) is a nice framework that allows you to do stuff on multiple remote machines. It's primary use is application deployment, but Capistrano can automate any task you can do over SSH. A great advantage of Capistrano is that it is wildly popular among web developers, and thus well supported and rich with plugins.
+
+Another common task you have to do on the remote machines is server provisioning/management, and Capistrano has no facilities for that. It's definitely possible to manage machines using Capistrano, but you have to bring your own scripts.
+
+[Chef Solo](#) is a tool that uses well-structured, data-driven Ruby scripts to describe and run configuration management routines. It runs locally and manages the machine it's running from. So before running Chef Solo, you have to install it and upload your scripts to that machine. You can do that by hand, you can use one of the many Chef Solo bootstrap scripts, or you can use some tool like littlechef, which needs to be configured to know about your servers.
+
+But wait - not only Capistrano knows where your servers are, it can already run commands on them, and in parallel. It's exactly what Chef Solo is lacking.
+
+Cuoco provides a set of Capistrano tasks to tie in Chef Solo into Capistrano.
+
+## Installation
+
+    gem install cuoco
+
+If you're using bundler you already know the drill.
+
+To make Cuoco tasks available in Capistrano, require this file in your `Capfile` or `config/deploy.rb`:
+
+    require 'cuoco/capistrano'
+
+## Usage
+
+### Fully automatic mode
+
+Cuoco can turn a completely bare machine into a live server with a single command. You buy servers, you declare them in Capistrano, you run `cap deploy:setup && cap deploy`. Done! [*]
+
+To do so, require this file in your `Capfile` or `config/deploy.rb`.
+
+    require 'cuoco/capistrano/automatic'
+
+It hooks up `cuoco:update_configuration` before `deploy:setup`. This built-in task, quote, 
+*"Prepares one or more servers for deployment."*. Which is what Chef does. If you 
+update your server configuration you run `cap deploy:setup` again, it is non-destructive.
+
+My personal opinion is that running Chef on each deploy is wasteful and forces
+sudo rights as a requirement for all deployers. If you really want to do that, you'll
+have to figure out the (extremely tricky) Capistrano directive yourself.
+
+[*] Naturally, you have to write the provisioning scripts first.
+
+### Manual mode
+
+There are separate Cuoco tasks defined for more granular control.
+
+    cuoco:bootstrap # Installs chef, but does not run anything
+    cuoco:run       # Runs chef assuming it's already installed
+
+### Usage without deployment
+
+If application deployment doesn't apply in your scenario, you can just run
+
+    cap cuoco:update_configuration
+
+directly.
+
+## Minimal requirements for remote machines
+
+Here are the minimal requirements for running Cuoco:
+
+* the server is running [one of the operating systems supported by Omnibus](http://wiki.opscode.com/display/chef/Installing+Omnibus+Chef+Client+on+Linux+and+Mac#InstallingOmnibusChefClientonLinuxandMac-TestedOperatingSystems) (most flavors of Linux will do);
+* Capistrano can connect to the server;
+* the Capistrano user has sudo rights on the server. See [my article on setting up user accounts](http://leonid.shevtsov.me/en/how-to-set-up-user-accounts-on-your-web-server) for the suggested approach.
+
+## Passing configuration
+
+You have two ways of hooking up Chef:
+
+    # set the root Chef directory 
+    # (this is the default setting)
+    set :chef_path, 'config/chef'
+
+    # or specify chef paths one by one
+    set :chef_cookbooks_path, ['config/cookbooks', 'config/site-cookbooks']
+    set :chef_roles_path, 'config/roles'
+    set :chef_data_bags_path, 'config/data_bags'
+
+### Variables
+
+TODO
+
+### Roles
+
+Cuoco assigns Chef roles from Capistrano roles. Thus, the chef roles directory
+must contain a role file for every Capistrano role you are using.
+
+Roles are handled by Chef, so if your server if both `:app` and `:db`, Chef's run list for that server will be `role[app], role[db]`.
+
+### Environments
+
+TODO Environments are not supported by Chef Solo. It would be nice to provide the functionality based on Capistrano stages.
+
+## What's in a name?
+
+"Cuoco" means "cook" in Italian. The original [Capistrano is a city in Italy](https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=Capistrano,+Vibo+Valentia,+Italy&aq=0&oq=capistrano,+italy&sll=37.0625,-95.677068&sspn=60.376022,135.263672&vpsrc=0&t=h&ie=UTF8&hq=&hnear=Capistrano,+Province+of+Vibo+Valentia,+Calabria,+Italy&z=16). So a chef working solo in Capistrano would be called *un cuoco*... get it now?
+
+* * * 
+
+2012 [Leonid Shevtsov](http://leonid.shevtsov.me)
