@@ -70,6 +70,7 @@ directly.
 Here are the minimal requirements for running Cuoco:
 
 * the server is running [one of the operating systems supported by Omnibus](http://wiki.opscode.com/display/chef/Installing+Omnibus+Chef+Client+on+Linux+and+Mac#InstallingOmnibusChefClientonLinuxandMac-TestedOperatingSystems) (most flavors of Linux will do);
+* the server has `sudo`, `bash` and either `curl` or `wget` installed (most Linux servers do);
 * Capistrano can connect to the server;
 * the Capistrano user has sudo rights on the server. See [my article on setting up user accounts](http://leonid.shevtsov.me/en/how-to-set-up-user-accounts-on-your-web-server) for the suggested approach.
 

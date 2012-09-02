@@ -3,7 +3,12 @@ module Cuoco
     BOOTSTRAP_COMMAND = "\
       if ! command -v chef-solo &>/dev/null;\
       then\
-        curl -L http://opscode.com/chef/install.sh | sudo -p \"sudo password: \" bash;\
+        if command -v curl &>/dev/null;
+        then
+          curl -L http://opscode.com/chef/install.sh | sudo -p \"sudo password: \" bash;\
+        else
+          wget -q -O - http://opscode.com/chef/install.sh | sudo -p \"sudo password: \" bash;\
+        fi;
         if ! command -v chef-solo &>/dev/null;\
         then\
           false;\

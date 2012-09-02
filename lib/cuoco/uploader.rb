@@ -20,6 +20,7 @@ module Cuoco
 
     def prepare_directory_structure
       @cap.run("mkdir -p #{@cuoco_remote_path}", :shell => '/bin/bash')
+      @cap.sudo("mkdir -p /etc/chef", :shell => '/bin/bash')
     end
 
     def upload_chef_config
