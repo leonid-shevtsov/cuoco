@@ -10,7 +10,7 @@ Key values:
 * comply to Chef directory structure as much as possible to simplify transition;
 * bootstrap bare machines with minimal footprint.
 
-## Longed summary
+## Longer summary
 
 *Capistrano and Chef Solo, sitting in a tree...*
 
