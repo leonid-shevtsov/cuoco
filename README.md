@@ -1,16 +1,12 @@
-# Cuoco
+# Cuoco provides plumbing necessary to run Chef Solo through Capistrano with zero configuration.
 
-## Short summary
-
-Cuoco provides plumbing necessary to run Chef Solo through Capistrano with zero configuration.
-
-Key values:
+## Key values
 
 * reuse as much server information from Capistrano as possible (including roles);
 * comply to Chef directory structure as much as possible to simplify transition;
 * bootstrap bare machines with minimal footprint.
 
-## Longer summary
+## Summary
 
 *Capistrano and Chef Solo, sitting in a tree...*
 
