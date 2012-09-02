@@ -10,7 +10,7 @@
 
 *Capistrano and Chef Solo, sitting in a tree...*
 
-[Capistrano](https://github.com/capistrano/capistrano#capistrano) is a framework that allows you to run commands in parallel on multiple remote machines. It's primary use is application deployment, but Capistrano can automate any task you can do over SSH. A big advantage of Capistrano is that it is wildly popular among web developers, and thus well supported and rich with plugins.
+[Capistrano](https://github.com/capistrano/capistrano#capistrano) is a framework that allows you to run commands in parallel on multiple remote machines. Its primary use is application deployment, but Capistrano can automate any task you can do over SSH. A big advantage of Capistrano is that it is wildly popular among web developers, and thus well supported and rich with plugins.
 
 Another common task you have to do on the remote machines is server provisioning/management, and Capistrano has no facilities for that. It's definitely possible to manage machines using Capistrano, but you have to bring your own scripts.
 
