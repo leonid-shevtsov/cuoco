@@ -21,8 +21,16 @@ module Cuoco
     end
 
     def prepare_directory_structure
-      @cap.run("mkdir -p #{@cuoco_remote_path}", :shell => '/bin/bash')
+      prepare_cuoco_directory
+
       @cap.sudo("mkdir -p /etc/chef", :shell => '/bin/bash')
+    end
+
+    def prepare_cuoco_directory
+      @cap.sudo("mkdir -p #{@cuoco_remote_path}", :shell => '/bin/bash')
+      # Note: $USER gets substituted *before* sudoing; so it contains the real user, not root
+      @cap.sudo("chown $USER #{@cuoco_remote_path}", :shell => '/bin/bash')
+      @cap.run("rm -rf #{@cuoco_remote_path}/*", :shell => '/bin/bash')
     end
 
     def upload_chef_config
@@ -32,7 +40,6 @@ module Cuoco
     end
 
     def upload_chef_files
-      @cap.sudo("rm -rf #{@cuoco_remote_path}/chef", :shell => '/bin/bash')
       @cap.upload(@chef_path, @cuoco_remote_path+'/chef', :recursive => true)
       @cap.run("#{@cap.sudo} rm -rf /var/chef && #{@cap.sudo} mv #{@cuoco_remote_path}/chef /var/chef && #{@cap.sudo} chown -R root:root /var/chef", :shell => '/bin/bash')
     end
