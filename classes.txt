@@ -1,0 +1,22 @@
+Cuoco
+  Tasks -> a module that implements all commands for Capistrano
+  /capistrano -> file that integrates Cuoco::Commands into Capistrano
+  Interface (Connection? Shell?) -> module that runs various shell commands through Capistrano
+  Configuration -> reads options from Capistrano
+
+  Commands (Templates? Builder? CommandBuilder? CommandFactory?) - template modules that take parameterized ruby methods and return actual shell command lines
+    BootstrapCommands
+    UploaderCommands
+    ChefCommands 
+    ...
+
+a Task uses Configuration to decide what Commands run through the Interface
+
+Tasks:
+  - bootstrap Chef
+  - set up Cuoco directories
+  - update files
+  - run Chef
+
+Task
+  def initialize(options, configuration, command_factory, interface)

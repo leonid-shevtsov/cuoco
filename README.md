@@ -32,6 +32,17 @@ To make Cuoco tasks available in Capistrano, require this file in your `Capfile`
 
 ## Usage
 
+### The Cuoco workflow.
+
+Cuoco does three things on the server:
+
+1. Establishes a Chef installation, if Chef is not already installed.
+2. Delivers your Chef configuration to the server.
+3. Runs Chef with an automatic runlist based on Capistrano roles.
+    1. Saves the persistent attributes until the next Chef run.
+
+Cuoco works *in parallel*, just like Capistrano.
+
 ### Fully automatic mode
 
 Cuoco can turn a completely bare machine into a live server with a single command. You buy servers, you declare them in Capistrano, you run `cap deploy:setup deploy`. Done! [*]
@@ -97,9 +108,11 @@ You can change that:
 This means that every server that you will run `cuoco:update_configuration` on will
 get its own run list based on the roles it has: if it has `:app` and `:db` roles, Chef's run list for that server will be `role[app], role[db]`.
 
+As any other Capistrano task, the `cuoco:update_configuration` task will run *in parallel* on multiple machines, and each one will get the roles that it was assigned in Capistrano.
+
 The chef roles directory *must* contain a role file for every Capistrano role you are using.
 
-### Variables
+### Attributes
 
 You can pass data into chef by declaring a `:chef_data` variable
 
@@ -113,9 +126,33 @@ The hash gets passed to Chef as if it was specified on the command line with `ch
 
 This approach is very simplistic and not very DRY, so I'm planning to expand on variables in further releases.
 
+### Secure attributes
+
+Chef features [encrypted data bags](http://wiki.opscode.com/display/chef/Encrypted+Data+Bags), that allow 
+AES-256 encryption of selected attributes/attribute trees. The encryption process requires a password. You can find out more on the Chef wiki.
+
+How does this apply to Cuoco? Since the source of the data is your Capistrano/Cuoco repository, storing the 
+password in the same repository renders the encryption useless. Thus, for the password to get to the remote server
+(where it is used), you'll have to provide it to Cuoco.
+
+To provide the secret key to Cuoco, you have to declare the `CUOCO_SECRET_KEY` environment variable:
+
+    # If it's in a file
+    CUOCO_SECRET_KEY=~/secret_key cap cuoco:update_configuration
+    # If you want to paste it from the clipboard (via a prompt)
+    CUOCO_SECRET_KEY=prompt cap cuoco:update_configuration
+
+If you do not declare the environment variable, no special handling of the secret key will occur. **It is stored on the remote servers, so you only have to provide the secret key once.**
+
 ### Environments
 
 TODO Environments are not supported by Chef Solo. It would be nice to provide the functionality based on Capistrano stages.
+
+## Security consideration
+
+Security is one of my main considerations when designing Cuoco.
+
+All Cuoco files are stored under the root user and are not group- or world-readable.
 
 ## What's in a name?
 

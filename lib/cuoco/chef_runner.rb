@@ -1,4 +1,5 @@
 module Cuoco
+  # This module prepares the command and runs Chef on the remote instances
   module ChefRunner
     class << self
       # $CAPISTRANO:HOSTROLES$ is a magic Capistrano placeholder that gets replaced 
@@ -7,7 +8,7 @@ module Cuoco
       # The awk command translates "app,web,db" into "role[app],role[web],role[db]" to pass them to Chef
       SERVER_ROLES = %Q{`echo '$CAPISTRANO:HOSTROLES$' | awk '{sub(/^/,"role["); sub(/$/,"]"); gsub(/,/,"],role["); print}'`}
 
-      def run
+      def run_default_roles
         run_list(SERVER_ROLES+',recipe[cuoco::save_node]')
       end
 
@@ -16,7 +17,7 @@ module Cuoco
           roles_and_recipes = roles_and_recipes.join(',')
         end
 
-        Cuoco::Connection.run(chef_command(roles_and_recipes))
+        Capistrano::Connection.run(chef_command(roles_and_recipes))
       end
 
     private
