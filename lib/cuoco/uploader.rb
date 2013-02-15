@@ -28,8 +28,7 @@ module Cuoco
 
     def prepare_cuoco_directory
       @cap.sudo("mkdir -p #{@cuoco_remote_path}", :shell => '/bin/bash')
-      # Note: $USER gets substituted *before* sudoing; so it contains the real user, not root
-      @cap.sudo("chown $USER #{@cuoco_remote_path}", :shell => '/bin/bash')
+      @cap.sudo("chown root #{@cuoco_remote_path}", :shell => '/bin/bash')
       @cap.run("rm -rf #{@cuoco_remote_path}/*", :shell => '/bin/bash')
     end
 
